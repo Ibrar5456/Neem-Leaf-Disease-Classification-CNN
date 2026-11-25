@@ -1,28 +1,29 @@
-# Neem Leaf Disease Classification Using CNN
+# Neem Leaf Disease Classification Using Custom CNN
 
-A Deep Learning project for classifying Neem (*Azadirachta indica*) leaf images into three categories using a Custom Convolutional Neural Network (CNN). This project investigates the impact of Data Augmentation on CNN classification performance.
+A Deep Learning project that classifies Neem (*Azadirachta indica*) leaf images into three categories using a Custom Convolutional Neural Network (CNN). This project compares CNN performance before and after applying Data Augmentation.
 
-## Project Overview
+## 1. Project Overview
 
-Neem leaves can be affected by different conditions and diseases. This project develops a CNN-based image classification model to identify three Neem leaf categories:
+Neem leaves may exhibit different health conditions and diseases. This project aims to develop a CNN-based image classification model to identify three Neem leaf categories:
 
-- **Chlorotic**
-- **Disease**
-- **Healthy**
+- Chlorotic
+- Disease
+- Healthy
 
-Two CNN experiments are conducted:
-1. Baseline CNN without Data Augmentation.
-2. CNN with Data Augmentation.
+Two experiments were performed:
 
-The objective is to compare their performance and evaluate whether Data Augmentation improves the model's generalization ability.
+1. **Baseline CNN:** Trained without Data Augmentation.
+2. **Augmented CNN:** Trained with Data Augmentation.
 
-## Dataset
+The main objective is to evaluate how Data Augmentation affects model performance and generalization.
 
-**Dataset Name:** Azadirachta Indica Leaf Disease and Health Classification Dataset
+## 2. Dataset Description
+
+**Dataset:** Azadirachta Indica Leaf Disease and Health Classification Dataset
 
 **Source:** [Mendeley Data – Neem Leaf Dataset](https://data.mendeley.com/datasets/7fh5k2kvx6/1)
 
-The dataset contains 3,900 images divided into three classes.
+The dataset contains 3,900 images distributed across three classes.
 
 | Dataset Split | Images |
 |---|---:|
@@ -31,53 +32,71 @@ The dataset contains 3,900 images divided into three classes.
 | Testing | 450 |
 | **Total** | **3,900** |
 
-Each class contains 1,000 training images, 150 validation images, and 150 testing images.
+Each class contains:
+- 1,000 training images
+- 150 validation images
+- 150 testing images
 
-## CNN Architecture
+The dataset is balanced across all three classes.
 
-A custom CNN was implemented from scratch using PyTorch.
+## 3. Image Preprocessing
 
-The architecture consists of:
+The notebook applies the following preprocessing steps:
 
-- Four Convolutional Layers
-- ReLU Activation Functions
-- Max Pooling Layers
-- Flatten Layer
-- Fully Connected Layers
-- Dropout (0.5)
-- Output Layer with 3 classes
+- Converts images into a consistent input size of 224 × 224 pixels.
+- Uses image padding to preserve the original aspect ratio.
+- Uses black padding where required.
+- Converts images into PyTorch tensors.
+
+## 4. CNN Architecture
+
+A custom Convolutional Neural Network was implemented from scratch using PyTorch.
+
+The model consists of:
+
+- Four convolutional layers.
+- ReLU activation functions.
+- Four Max Pooling layers.
+- A Flatten layer.
+- A fully connected layer with 512 neurons.
+- Dropout with a probability of 0.5.
+- An output layer with three neurons.
 
 ### Model Configuration
 
 | Parameter | Value |
 |---|---|
 | Framework | PyTorch |
-| Input Image Size | 224 × 224 |
+| Input Size | 224 × 224 |
 | Batch Size | 32 |
-| Epochs | 25 |
+| Number of Epochs | 25 |
 | Optimizer | Adam |
 | Learning Rate | 0.001 |
 | Loss Function | CrossEntropyLoss |
-| Hardware | NVIDIA Tesla T4 GPU |
+| Dropout | 0.5 |
+| GPU | NVIDIA Tesla T4 |
+| Trainable Parameters | 26,080,579 |
 
-## Data Augmentation
+## 5. Data Augmentation
 
-Data Augmentation was applied to the training images to improve model generalization.
+Data Augmentation was applied only to the training dataset in the second experiment.
 
-The following techniques were used:
+The techniques used were:
 
-- Random Horizontal Flip
-- Random Rotation (±10°)
-- Color Jitter (Brightness, Contrast, Saturation)
-- Image Padding and Resizing
+- Random Horizontal Flip (p = 0.5)
+- Random Rotation (±10 degrees)
+- Color Jitter:
+  - Brightness: 0.15
+  - Contrast: 0.15
+  - Saturation: 0.10
 
-No random augmentation was applied to validation or test images.
+Validation and test images were processed without random augmentation.
 
-## Experimental Results
+## 6. Experimental Results
 
-Two experiments were conducted to evaluate the effect of Data Augmentation.
+Both models were trained for 25 epochs and evaluated using the same test dataset containing 450 images.
 
-### Baseline CNN (Without Data Augmentation)
+### 6.1 Baseline CNN (Without Data Augmentation)
 
 | Metric | Result |
 |---|---:|
@@ -85,8 +104,9 @@ Two experiments were conducted to evaluate the effect of Data Augmentation.
 | Best Validation Accuracy | 89.11% |
 | Test Accuracy | **87.33%** |
 | Lowest Validation Loss | 0.2947 |
+| Epoch with Lowest Validation Loss | 14 |
 
-### CNN with Data Augmentation
+### 6.2 CNN with Data Augmentation
 
 | Metric | Result |
 |---|---:|
@@ -94,58 +114,67 @@ Two experiments were conducted to evaluate the effect of Data Augmentation.
 | Best Validation Accuracy | 93.33% |
 | Test Accuracy | **92.89%** |
 | Lowest Validation Loss | 0.1608 |
+| Epoch with Lowest Validation Loss | 23 |
 
-### Performance Comparison
+### 6.3 Performance Comparison
 
 | Metric | Baseline CNN | CNN with Augmentation |
 |---|---:|---:|
-| Training Accuracy | 97.40% | 89.50% |
-| Validation Accuracy | 89.11% | 93.33% |
+| Final Training Accuracy | 97.40% | 89.50% |
+| Best Validation Accuracy | 89.11% | 93.33% |
 | Test Accuracy | 87.33% | 92.89% |
 
-**Test Accuracy Improvement: +5.56 Percentage Points**
+**Test Accuracy Improvement: 5.56 Percentage Points**
 
-The augmented CNN achieved better validation and testing performance than the baseline model.
+The CNN with Data Augmentation achieved better validation and test performance than the baseline CNN.
 
-## Classification Report
+## 7. Classification Report
 
-### Baseline CNN
+### 7.1 Baseline CNN
 
-| Class | Precision | Recall | F1-Score |
-|---|---:|---:|---:|
-| Chlorotic | 0.83 | 0.85 | 0.84 |
-| Disease | 0.84 | 0.79 | 0.81 |
-| Healthy | 0.95 | 0.98 | 0.97 |
+| Class | Precision | Recall | F1-Score | Support |
+|---|---:|---:|---:|---:|
+| Chlorotic | 0.83 | 0.85 | 0.84 | 150 |
+| Disease | 0.84 | 0.79 | 0.81 | 150 |
+| Healthy | 0.95 | 0.98 | 0.97 | 150 |
+| **Macro Average** | **0.87** | **0.87** | **0.87** | **450** |
+| **Weighted Average** | **0.87** | **0.87** | **0.87** | **450** |
 
-### CNN with Data Augmentation
+### 7.2 CNN with Data Augmentation
 
-| Class | Precision | Recall | F1-Score |
-|---|---:|---:|---:|
-| Chlorotic | 0.92 | 0.92 | 0.92 |
-| Disease | 0.90 | 0.90 | 0.90 |
-| Healthy | 0.97 | 0.97 | 0.97 |
+| Class | Precision | Recall | F1-Score | Support |
+|---|---:|---:|---:|---:|
+| Chlorotic | 0.92 | 0.92 | 0.92 | 150 |
+| Disease | 0.90 | 0.90 | 0.90 | 150 |
+| Healthy | 0.97 | 0.97 | 0.97 | 150 |
+| **Macro Average** | **0.93** | **0.93** | **0.93** | **450** |
+| **Weighted Average** | **0.93** | **0.93** | **0.93** | **450** |
 
-## Conclusion
+## 8. Conclusion
 
-The experimental results demonstrate that Data Augmentation improved the performance of the custom CNN model.
+The experimental results demonstrate that Data Augmentation improved the classification performance of the custom CNN model.
 
-The baseline CNN achieved 87.33% test accuracy, while the augmented CNN achieved 92.89%, representing an improvement of 5.56 percentage points.
+The baseline CNN achieved 87.33% test accuracy, whereas the augmented CNN achieved 92.89% test accuracy, representing an improvement of 5.56 percentage points.
 
-Although the augmented model achieved lower training accuracy, it performed better on unseen validation and test images. This indicates improved generalization and suggests that Data Augmentation helped reduce overfitting.
+Although the augmented model achieved lower training accuracy, it performed better on validation and unseen test images. This suggests improved generalization and reduced overfitting.
 
-## Technologies Used
+Therefore, Data Augmentation proved beneficial for this Neem Leaf Classification task.
+
+## 9. Technologies Used
 
 - Python
 - PyTorch
+- Torchvision
 - NumPy
 - Matplotlib
 - Scikit-learn
+- Pillow (PIL)
 - Google Colab
-- CUDA / NVIDIA Tesla T4 GPU
+- CUDA
 
-## How to Run
+## 10. How to Run the Project
 
-1. Clone this repository:
+1. Clone the repository:
 
    ```bash
    git clone https://github.com/Ibrar5456/Neem-Leaf-Disease-Classification-CNN.git
@@ -159,18 +188,35 @@ Although the augmented model achieved lower training accuracy, it performed bett
 
 3. Download the dataset from [Mendeley Data](https://data.mendeley.com/datasets/7fh5k2kvx6/1).
 
-4. Upload the dataset to your Google Drive or configure the dataset path in the notebook.
+4. Extract the dataset and organize it into Train, Validation, and Test folders, each containing the three class folders.
 
-5. Open `Neem_Leaf_CNN_With_Data_Augmentation.ipynb` in Google Colab.
+5. Open the notebook in Google Colab.
 
-6. Run the notebook cells sequentially.
+6. Configure the dataset path according to your environment.
 
-## Repository Contents
+7. Run the notebook cells sequentially.
 
-- `Neem_Leaf_CNN_With_Data_Augmentation.ipynb` – Complete implementation, training, evaluation, and comparison experiments.
-- `README.md` – Project documentation.
+## 11. Repository Structure
 
-## Author
+```text
+Neem-Leaf-Disease-Classification-CNN/
+│
+├── Neem_Leaf_CNN_With_Data_Augmentation.ipynb
+├── README.md
+│
+├── Models/
+│   ├── best_cnn_model_baseline.pth
+│   └── best_cnn_model_augmented.pth
+│
+└── Results/
+    ├── training_accuracy.png
+    ├── training_loss.png
+    ├── confusion_matrix_baseline.png
+    ├── confusion_matrix_augmented.png
+    └── accuracy_comparison.png
+```
+
+## 12. Author
 
 **Md. Ibrar Mahmud Rasin**
 
