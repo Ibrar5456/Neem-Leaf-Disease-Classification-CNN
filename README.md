@@ -209,11 +209,11 @@ Neem-Leaf-Disease-Classification-CNN/
 │   └── best_cnn_model_augmented.pth
 │
 └── Results/
-    ├── training_accuracy.png
-    ├── training_loss.png
-    ├── confusion_matrix_baseline.png
-    ├── confusion_matrix_augmented.png
-    └── accuracy_comparison.png
+    ├── Accuracy_Comperison.png
+    ├── Confusion_Matrix_Augmented.png
+    ├── Confusion_Matrix_Baseline.png
+    ├── Loss_and_Accuracy_Augmented.png
+    └── Loss_and_Accuracy_Baseline.png
 ```
 
 ## 12. Author
